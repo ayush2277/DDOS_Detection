@@ -3,24 +3,20 @@
 
 #include <string>
 #include <unordered_map>
-
-using namespace std;
+#include <ctime>
 
 class SYNFloodDetector {
 private:
-    unordered_map<string, int> synCount;
-    unordered_map<string, int> synAckCount;
-    unordered_map<string, double> ewmaRatio;
+    std::unordered_map<std::string, int> synCount;
+    std::unordered_map<std::string, int> synAckCount;
+    std::unordered_map<std::string, double> ewmaRatio;
     std::unordered_map<std::string, double> lastEWMA;
-
-    // const double ALPHA = 0.125;           // Weight for the EWMA calculation
-    // const double EWMA_THRESHOLD = 3.0;   // Threshold for EWMA to detect attack
-    // const int SYN_THRESHOLD = 50;         // Threshold for SYN count to detect attack
-
-
+    std::unordered_map<std::string, time_t> lastSeen;     // <-- 🆕 added
+    std::unordered_map<std::string, bool> flaggedSources;
+    std::unordered_map<std::string, time_t> lastAlerted; // <-- 🆕 added
 public:
-    void processPacket(const string& srcIP, const string& dstIP, bool synFlag, bool ackFlag);
-    void checkForAttack(const std::string& srcIP);
+    void processPacket(const std::string& srcIP, const std::string& dstIP, bool synFlag, bool ackFlag);
+    void checkForAttack(const std::string& srcIP, time_t now);  // <-- 🆕 updated signature
 };
 
 #endif
