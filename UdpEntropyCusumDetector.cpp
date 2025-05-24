@@ -28,8 +28,8 @@ bool UdpEntropyCusumDetector::update(const std::string& srcIP, int dstPort) {
     double entropySrc = calculateEntropy(srcIPCount);
     double entropyDst = calculateEntropy(dstPortCount);
 
-    std::cout << "Entropy (src): " << entropySrc << ", Entropy (dst): " << entropyDst
-              << ", Packet count: " << totalPacketsInWindow << std::endl;
+   // std::cout << "Entropy (src): " << entropySrc << ", Entropy (dst): " << entropyDst
+            //  << ", Packet count: " << totalPacketsInWindow << std::endl;
 
     updateDynamicThresholds(totalPacketsInWindow);
     applyCUSUM(entropySrc);
@@ -38,13 +38,13 @@ bool UdpEntropyCusumDetector::update(const std::string& srcIP, int dstPort) {
     bool entropyAnomaly = (std::abs(entropySrc - baselineEntropySrc) > thresholdEntropyChange) ||
                            (std::abs(entropyDst - baselineEntropyDst) > thresholdEntropyChange);
 
-    std::cout << "Volume attack: " << volumeAttack << ", Entropy anomaly: " << entropyAnomaly << std::endl;
+    //std::cout << "Volume attack: " << volumeAttack << ", Entropy anomaly: " << entropyAnomaly << std::endl;
 
     bool justAlerted = false;
     if ((volumeAttack || entropyAnomaly) && !attackDetected) {
-        std::cout << "[ALERT] UDP flood detected! Entropy (src): " << entropySrc
-                  << ", Entropy (dst): " << entropyDst
-                  << ", Packet count: " << totalPacketsInWindow << std::endl;
+        // std::cout << "[ALERT] UDP flood detected! Entropy (src): " << entropySrc
+        //           << ", Entropy (dst): " << entropyDst
+        //           << ", Packet count: " << totalPacketsInWindow << std::endl;
         attackDetected = true;
         justAlerted = true;
     }

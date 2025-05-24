@@ -12,9 +12,10 @@ unordered_map<string, HttpDetector::CusumData> HttpDetector::ipCusum;
 unordered_map<string, int> HttpDetector::ipFrequency;
 int HttpDetector::totalPacketWindow = 0;
 
-const double thresholdCusum = 30.0;
-const double slackK = 5.0;
-const double entropyThreshold = 1.5;
+const double thresholdCusum = 20.0;
+const double slackK = 3.0;
+const double entropyThreshold = 0.5;
+const int windowSize = 50;
 
 HttpDetector::HttpDetector(const string& filename) : filename(filename) {}
 
@@ -75,7 +76,7 @@ void HttpDetector::handleEntropy(const string& srcIP) {
     if (totalPacketWindow % 50 == 0) {
         double entropy = calculateEntropy();
         if (entropy < entropyThreshold) {
-            cout << "⚠ [Entropy] Low entropy detected (" << entropy << ") → Possible coordinated attack." << endl;
+            cout << "⚠ [Entropy] Low entropy detected (" << entropy << ") → Possible HTTP attack coordinated attack." << endl;
         }
         resetWindow();
     }
